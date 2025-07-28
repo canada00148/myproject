@@ -158,10 +158,18 @@ public class PortForwardServer {
                 return;
             }
             
+            // 獲取對應的遠程端口
+            int remotePort = getRemotePort(listenPort);
+            if (remotePort == -1) {
+                logger.error("找不到監聽端口 {} 對應的遠程端口", listenPort);
+                clientChannel.close();
+                return;
+            }
+            
             // 創建到遠程服務器的連接（1:1端口映射）
-            SocketChannel remoteChannel = createRemoteConnection(listenPort);
+            SocketChannel remoteChannel = createRemoteConnection(remotePort);
             if (remoteChannel == null) {
-                logger.error("無法連接到遠程服務器端口: {}", listenPort);
+                logger.error("無法連接到遠程服務器端口: {}", remotePort);
                 clientChannel.close();
                 return;
             }
@@ -195,9 +203,24 @@ public class PortForwardServer {
     }
     
     /**
+     * 根據監聽端口獲取對應的遠程端口
+     */
+    private int getRemotePort(int listenPort) {
+        List<Integer> listenPorts = config.getListenPorts();
+        List<Integer> remotePorts = config.getRemotePorts();
+        
+        for (int i = 0; i < listenPorts.size(); i++) {
+            if (listenPorts.get(i) == listenPort) {
+                return remotePorts.get(i);
+            }
+        }
+        return -1; // 找不到對應的遠程端口
+    }
+    
+    /**
      * 創建到遠程服務器的連接
      */
-    private SocketChannel createRemoteConnection(int listenPort) {
+    private SocketChannel createRemoteConnection(int remotePort) {
         try {
             SocketChannel remoteChannel = SocketChannel.open();
             remoteChannel.configureBlocking(true);
@@ -207,14 +230,14 @@ public class PortForwardServer {
             remoteChannel.socket().setSendBufferSize(config.getMaxPacketSize());
             remoteChannel.socket().setReceiveBufferSize(config.getMaxPacketSize());
             
-            // 1:1端口映射：監聽端口對應遠程端口
-            InetSocketAddress remoteAddress = new InetSocketAddress(config.getRemoteHost(), listenPort);
+            // 連接到指定的遠程端口
+            InetSocketAddress remoteAddress = new InetSocketAddress(config.getRemoteHost(), remotePort);
             remoteChannel.connect(remoteAddress);
             
             return remoteChannel;
             
         } catch (IOException e) {
-            logger.error("連接到遠程服務器失敗: {}:{}", config.getRemoteHost(), listenPort, e);
+            logger.error("連接到遠程服務器失敗: {}:{}", config.getRemoteHost(), remotePort, e);
             return null;
         }
     }

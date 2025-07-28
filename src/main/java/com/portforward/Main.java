@@ -23,7 +23,8 @@ public class Main {
             server.start();
             
             logger.info("端口轉發服務器啟動成功！");
-            logger.info("監聽端口: {}", server.getListeningPorts());
+            logger.info("監聽端口: {}", config.getListenPorts());
+            logger.info("遠程端口: {}", config.getRemotePorts());
             logger.info("遠程服務器: {} (1:1端口映射)", config.getRemoteHost());
             logger.info("安全配置:");
             logger.info("  - 最大封包大小: {} bytes", config.getMaxPacketSize());

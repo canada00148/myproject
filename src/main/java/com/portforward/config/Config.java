@@ -17,6 +17,7 @@ public class Config {
     
     private Properties properties;
     private List<Integer> listenPorts;
+    private List<Integer> remotePorts;
     private String remoteHost;
     private int maxPacketSize;
     private int minPacketSize;
@@ -53,9 +54,9 @@ public class Config {
     }
     
     private void parseConfig() {
-        // 解析監聽端口
-        String listenPortsStr = properties.getProperty("listen.ports", "8080");
-        listenPorts = parsePortMappings(listenPortsStr);
+        // 解析端口映射
+        String portMappingsStr = properties.getProperty("port.mappings", "8080=8080");
+        parsePortMappings(portMappingsStr);
         
         // 解析遠程服務器配置
         remoteHost = properties.getProperty("remote.host", "127.0.0.1");
@@ -77,53 +78,75 @@ public class Config {
         tcpPingTimeout = Integer.parseInt(properties.getProperty("security.tcp_ping_timeout", "5000"));
         maxIdleTime = Integer.parseInt(properties.getProperty("security.max_idle_time", "300000"));
         
-        logger.info("配置加載完成: 監聽端口={}, 遠程服務器={}", listenPorts, remoteHost);
+        logger.info("配置加載完成: 監聽端口={}, 遠程端口={}, 遠程服務器={}", listenPorts, remotePorts, remoteHost);
     }
     
-    private List<Integer> parsePortMappings(String portMappings) {
-        List<Integer> ports = new ArrayList<>();
-        String[] parts = portMappings.split(",");
+    private void parsePortMappings(String portMappings) {
+        listenPorts = new ArrayList<>();
+        remotePorts = new ArrayList<>();
         
-        for (String part : parts) {
-            part = part.trim();
-            if (part.isEmpty()) continue;
+        String[] mappings = portMappings.split(",");
+        
+        for (String mapping : mappings) {
+            mapping = mapping.trim();
+            if (mapping.isEmpty()) continue;
             
-            // 檢查是否為端口範圍 (例如: 2000-2010)
-            Matcher rangeMatcher = PORT_RANGE_PATTERN.matcher(part);
-            if (rangeMatcher.matches()) {
-                int start = Integer.parseInt(rangeMatcher.group(1));
-                int end = Integer.parseInt(rangeMatcher.group(2));
-                if (start > end) {
-                    int temp = start;
-                    start = end;
-                    end = temp;
-                }
-                for (int port = start; port <= end; port++) {
-                    if (port >= 1 && port <= 65535) {
-                        ports.add(port);
-                    }
-                }
-            } else {
-                // 單個端口
-                Matcher singleMatcher = PORT_SINGLE_PATTERN.matcher(part);
-                if (singleMatcher.matches()) {
-                    int port = Integer.parseInt(part);
-                    if (port >= 1 && port <= 65535) {
-                        ports.add(port);
-                    }
-                }
+            // 解析 監聽端口=遠程端口 格式
+            String[] parts = mapping.split("=");
+            if (parts.length != 2) {
+                throw new IllegalArgumentException("端口映射格式錯誤: " + mapping + 
+                    "，正確格式: 監聽端口=遠程端口");
             }
+            
+            String listenPortStr = parts[0].trim();
+            String remotePortStr = parts[1].trim();
+            
+            // 解析監聽端口
+            int listenPort = parseSinglePort(listenPortStr);
+            // 解析遠程端口
+            int remotePort = parseSinglePort(remotePortStr);
+            
+            // 檢查端口範圍
+            if (listenPort < 1 || listenPort > 65535) {
+                throw new IllegalArgumentException("監聽端口超出範圍: " + listenPort);
+            }
+            if (remotePort < 1 || remotePort > 65535) {
+                throw new IllegalArgumentException("遠程端口超出範圍: " + remotePort);
+            }
+            
+            listenPorts.add(listenPort);
+            remotePorts.add(remotePort);
         }
         
-        // 去重並保持原始順序
-        Set<Integer> uniquePorts = new LinkedHashSet<>(ports);
-        List<Integer> result = new ArrayList<>(uniquePorts);
+        // 檢查端口數量一致性
+        if (listenPorts.size() != remotePorts.size()) {
+            throw new IllegalArgumentException("監聽端口和遠程端口數量不一致: " + 
+                "監聽端口=" + listenPorts.size() + ", 遠程端口=" + remotePorts.size());
+        }
         
-        return result;
+        // 檢查監聽端口重複
+        Set<Integer> uniqueListenPorts = new HashSet<>(listenPorts);
+        if (uniqueListenPorts.size() != listenPorts.size()) {
+            throw new IllegalArgumentException("監聽端口存在重複: " + listenPorts);
+        }
+        
+        logger.info("端口映射解析完成: {} 個映射", listenPorts.size());
+        for (int i = 0; i < listenPorts.size(); i++) {
+            logger.info("  監聽端口 {} -> 遠程端口 {}", listenPorts.get(i), remotePorts.get(i));
+        }
+    }
+    
+    private int parseSinglePort(String portStr) {
+        try {
+            return Integer.parseInt(portStr);
+        } catch (NumberFormatException e) {
+            throw new IllegalArgumentException("端口格式錯誤: " + portStr);
+        }
     }
     
     // Getters
     public List<Integer> getListenPorts() { return listenPorts; }
+    public List<Integer> getRemotePorts() { return remotePorts; }
     public String getRemoteHost() { return remoteHost; }
     public int getMaxPacketSize() { return maxPacketSize; }
     public int getMinPacketSize() { return minPacketSize; }

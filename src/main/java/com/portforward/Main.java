@@ -24,7 +24,7 @@ public class Main {
             
             logger.info("端口轉發服務器啟動成功！");
             logger.info("監聽端口: {}", server.getListeningPorts());
-            logger.info("遠程服務器: {}:{}", config.getRemoteHost(), config.getRemotePort());
+            logger.info("遠程服務器: {} (1:1端口映射)", config.getRemoteHost());
             logger.info("安全配置:");
             logger.info("  - 最大封包大小: {} bytes", config.getMaxPacketSize());
             logger.info("  - 最小封包大小: {} bytes", config.getMinPacketSize());
@@ -33,10 +33,13 @@ public class Main {
             logger.info("  - TCP ping檢測: {}", config.isTcpPingDetection());
             
             // 添加關閉鉤子
-            Runtime.getRuntime().addShutdownHook(new Thread(() -> {
-                logger.info("收到關閉信號，正在停止服務器...");
-                server.stop();
-                logger.info("服務器已停止");
+            Runtime.getRuntime().addShutdownHook(new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    logger.info("收到關閉信號，正在停止服務器...");
+                    server.stop();
+                    logger.info("服務器已停止");
+                }
             }));
             
             // 保持主線程運行

@@ -4,5 +4,7 @@ com/portforward/handler/ConnectionHandler.class
 com/portforward/config/Config.class
 com/portforward/server/PortForwardServer.class
 com/portforward/protocol/ProxyProtocolParser.class
+com/portforward/Main$1.class
 com/portforward/protocol/ProxyProtocolParser$ProxyInfo.class
 com/portforward/security/SecurityManager.class
+com/portforward/server/PortForwardServer$1.class

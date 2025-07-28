@@ -26,7 +26,7 @@
 ## 安裝和配置
 
 ### 1. 環境要求
-- Java 11 或更高版本
+- Java 8 或更高版本
 - Maven 3.6 或更高版本
 
 ### 2. 編譯項目
@@ -39,11 +39,11 @@ mvn clean package
 
 ```properties
 # 端口映射配置
-port.mappings=2000,2011-2020,8080
+listen.ports=2000,2011-2020,8080
 
 # 遠程服務器配置
 remote.host=127.0.0.1
-remote.port=80
+# 1:1端口映射：監聽端口對應遠程端口
 
 # 安全配置
 security.max_packet_size=8192

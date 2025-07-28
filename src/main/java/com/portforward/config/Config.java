@@ -16,9 +16,8 @@ public class Config {
     private static final Pattern PORT_SINGLE_PATTERN = Pattern.compile("(\\d+)");
     
     private Properties properties;
-    private List<Integer> localPorts;
+    private List<Integer> listenPorts;
     private String remoteHost;
-    private int remotePort;
     private int maxPacketSize;
     private int minPacketSize;
     private int connectionTimeout;
@@ -54,13 +53,12 @@ public class Config {
     }
     
     private void parseConfig() {
-        // 解析端口映射
-        String portMappings = properties.getProperty("port.mappings", "8080");
-        localPorts = parsePortMappings(portMappings);
+        // 解析監聽端口
+        String listenPortsStr = properties.getProperty("listen.ports", "8080");
+        listenPorts = parsePortMappings(listenPortsStr);
         
         // 解析遠程服務器配置
         remoteHost = properties.getProperty("remote.host", "127.0.0.1");
-        remotePort = Integer.parseInt(properties.getProperty("remote.port", "80"));
         
         // 解析安全配置
         maxPacketSize = Integer.parseInt(properties.getProperty("security.max_packet_size", "8192"));
@@ -79,7 +77,7 @@ public class Config {
         tcpPingTimeout = Integer.parseInt(properties.getProperty("security.tcp_ping_timeout", "5000"));
         maxIdleTime = Integer.parseInt(properties.getProperty("security.max_idle_time", "300000"));
         
-        logger.info("配置加載完成: 本地端口={}, 遠程服務器={}:{}", localPorts, remoteHost, remotePort);
+        logger.info("配置加載完成: 監聽端口={}, 遠程服務器={}", listenPorts, remoteHost);
     }
     
     private List<Integer> parsePortMappings(String portMappings) {
@@ -126,9 +124,8 @@ public class Config {
     }
     
     // Getters
-    public List<Integer> getLocalPorts() { return localPorts; }
+    public List<Integer> getListenPorts() { return listenPorts; }
     public String getRemoteHost() { return remoteHost; }
-    public int getRemotePort() { return remotePort; }
     public int getMaxPacketSize() { return maxPacketSize; }
     public int getMinPacketSize() { return minPacketSize; }
     public int getConnectionTimeout() { return connectionTimeout; }

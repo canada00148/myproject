@@ -56,7 +56,7 @@ public class PortForwardServer {
             selector = Selector.open();
             
             // 綁定所有端口
-            List<Integer> ports = config.getLocalPorts();
+            List<Integer> ports = config.getListenPorts();
             for (int port : ports) {
                 bindPort(port);
             }
@@ -133,8 +133,10 @@ public class PortForwardServer {
             clientChannel.socket().setKeepAlive(true);
             clientChannel.socket().setSoTimeout(config.getConnectionTimeout());
             
-            // 獲取客戶端地址
+            // 獲取客戶端地址和監聽端口
             InetSocketAddress clientAddress = (InetSocketAddress) clientChannel.getRemoteAddress();
+            InetSocketAddress serverAddress = (InetSocketAddress) serverChannel.getLocalAddress();
+            int listenPort = serverAddress.getPort();
             
             // 檢查連接限制
             if (!securityManager.isConnectionAllowed(clientAddress.getAddress())) {
@@ -156,10 +158,10 @@ public class PortForwardServer {
                 return;
             }
             
-            // 創建到遠程服務器的連接
-            SocketChannel remoteChannel = createRemoteConnection();
+            // 創建到遠程服務器的連接（1:1端口映射）
+            SocketChannel remoteChannel = createRemoteConnection(listenPort);
             if (remoteChannel == null) {
-                logger.error("無法連接到遠程服務器");
+                logger.error("無法連接到遠程服務器端口: {}", listenPort);
                 clientChannel.close();
                 return;
             }
@@ -176,11 +178,14 @@ public class PortForwardServer {
             );
             
             // 在線程池中處理連接
-            executorService.submit(() -> {
-                try {
-                    handler.handle();
-                } catch (Exception e) {
-                    logger.error("處理連接失敗", e);
+            executorService.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        handler.handle();
+                    } catch (Exception e) {
+                        logger.error("處理連接失敗", e);
+                    }
                 }
             });
             
@@ -192,7 +197,7 @@ public class PortForwardServer {
     /**
      * 創建到遠程服務器的連接
      */
-    private SocketChannel createRemoteConnection() {
+    private SocketChannel createRemoteConnection(int listenPort) {
         try {
             SocketChannel remoteChannel = SocketChannel.open();
             remoteChannel.configureBlocking(true);
@@ -202,14 +207,14 @@ public class PortForwardServer {
             remoteChannel.socket().setSendBufferSize(config.getMaxPacketSize());
             remoteChannel.socket().setReceiveBufferSize(config.getMaxPacketSize());
             
-            // 連接到遠程服務器
-            InetSocketAddress remoteAddress = new InetSocketAddress(config.getRemoteHost(), config.getRemotePort());
+            // 1:1端口映射：監聽端口對應遠程端口
+            InetSocketAddress remoteAddress = new InetSocketAddress(config.getRemoteHost(), listenPort);
             remoteChannel.connect(remoteAddress);
             
             return remoteChannel;
             
         } catch (IOException e) {
-            logger.error("連接到遠程服務器失敗: {}:{}", config.getRemoteHost(), config.getRemotePort(), e);
+            logger.error("連接到遠程服務器失敗: {}:{}", config.getRemoteHost(), listenPort, e);
             return null;
         }
     }
@@ -260,6 +265,6 @@ public class PortForwardServer {
      * 獲取監聽的端口列表
      */
     public List<Integer> getListeningPorts() {
-        return config.getLocalPorts();
+        return config.getListenPorts();
     }
 }

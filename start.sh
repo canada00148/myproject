@@ -11,8 +11,8 @@ mkdir -p $LOG_DIR
 
 # 檢查Java版本
 JAVA_VERSION=$(java -version 2>&1 | head -n 1 | cut -d'"' -f2 | cut -d'.' -f1)
-if [ "$JAVA_VERSION" -lt "11" ]; then
-    echo "錯誤: 需要Java 11或更高版本，當前版本: $JAVA_VERSION"
+if [ "$JAVA_VERSION" -lt "8" ]; then
+    echo "錯誤: 需要Java 8或更高版本，當前版本: $JAVA_VERSION"
     exit 1
 fi
 

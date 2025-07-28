@@ -115,10 +115,9 @@ public class Config {
             }
         }
         
-        // 去重並排序
+        // 去重並保持原始順序
         Set<Integer> uniquePorts = new LinkedHashSet<>(ports);
         List<Integer> result = new ArrayList<>(uniquePorts);
-        Collections.sort(result);
         
         return result;
     }

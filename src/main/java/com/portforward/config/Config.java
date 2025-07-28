@@ -114,20 +114,15 @@ public class Config {
                 throw new IllegalArgumentException("遠程端口超出範圍: " + remotePort);
             }
             
+            // 按照配置文件順序添加，不進行任何排序
             listenPorts.add(listenPort);
             remotePorts.add(remotePort);
         }
         
-        // 檢查端口數量一致性
+        // 只檢查端口數量一致性
         if (listenPorts.size() != remotePorts.size()) {
             throw new IllegalArgumentException("監聽端口和遠程端口數量不一致: " + 
                 "監聽端口=" + listenPorts.size() + ", 遠程端口=" + remotePorts.size());
-        }
-        
-        // 檢查監聽端口重複
-        Set<Integer> uniqueListenPorts = new HashSet<>(listenPorts);
-        if (uniqueListenPorts.size() != listenPorts.size()) {
-            throw new IllegalArgumentException("監聽端口存在重複: " + listenPorts);
         }
         
         logger.info("端口映射解析完成: {} 個映射", listenPorts.size());

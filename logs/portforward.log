@@ -211,3 +211,73 @@
 2025-07-28 20:45:57.114 [main] INFO  com.portforward.Main -   - 每IP最大連接數: 100
 2025-07-28 20:45:57.114 [main] INFO  com.portforward.Main -   - 連接速率限制: 10/60000ms
 2025-07-28 20:45:57.114 [main] INFO  com.portforward.Main -   - TCP ping檢測: true
+2025-07-28 20:49:18.082 [Thread-0] INFO  com.portforward.Main - 收到關閉信號，正在停止服務器...
+2025-07-28 20:49:18.084 [Thread-0] INFO  c.p.server.PortForwardServer - 停止端口轉發服務器...
+2025-07-28 20:49:18.086 [Thread-0] INFO  c.p.server.PortForwardServer - 端口轉發服務器已停止
+2025-07-28 20:49:18.087 [Thread-0] INFO  com.portforward.Main - 服務器已停止
+2025-07-28 20:49:56.728 [main] INFO  com.portforward.Main - 啟動Java NIO端口轉發服務器...
+2025-07-28 20:49:56.730 [main] INFO  com.portforward.config.Config - 端口映射解析完成: 11 個映射
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2020 -> 遠程端口 2020
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2019 -> 遠程端口 2019
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2018 -> 遠程端口 2018
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2017 -> 遠程端口 2017
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2016 -> 遠程端口 2016
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2015 -> 遠程端口 2015
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2014 -> 遠程端口 2014
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2013 -> 遠程端口 2013
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2012 -> 遠程端口 2012
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 2011 -> 遠程端口 2011
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config -   監聽端口 8080 -> 遠程端口 8080
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.config.Config - 配置加載完成: 監聽端口=[2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 8080], 遠程端口=[2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 8080], 遠程服務器=127.0.0.1
+2025-07-28 20:49:56.731 [main] INFO  com.portforward.Main - 配置加載成功
+2025-07-28 20:49:56.736 [main] INFO  c.p.server.PortForwardServer - 啟動端口轉發服務器...
+2025-07-28 20:49:56.742 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2020
+2025-07-28 20:49:56.742 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2019
+2025-07-28 20:49:56.742 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2018
+2025-07-28 20:49:56.742 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2017
+2025-07-28 20:49:56.742 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2016
+2025-07-28 20:49:56.742 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2015
+2025-07-28 20:49:56.743 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2014
+2025-07-28 20:49:56.743 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2013
+2025-07-28 20:49:56.743 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2012
+2025-07-28 20:49:56.743 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2011
+2025-07-28 20:49:56.743 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 8080
+2025-07-28 20:49:56.743 [main] INFO  c.p.server.PortForwardServer - 端口轉發服務器啟動完成，監聽端口: [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 8080]
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main - 端口轉發服務器啟動成功！
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main - 監聽端口: [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 8080]
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main - 遠程端口: [2020, 2019, 2018, 2017, 2016, 2015, 2014, 2013, 2012, 2011, 8080]
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main - 遠程服務器: 127.0.0.1 (1:1端口映射)
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main - 安全配置:
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main -   - 最大封包大小: 8192 bytes
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main -   - 最小封包大小: 1 bytes
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main -   - 每IP最大連接數: 100
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main -   - 連接速率限制: 10/60000ms
+2025-07-28 20:49:56.744 [main] INFO  com.portforward.Main -   - TCP ping檢測: true
+2025-07-28 20:50:10.293 [Thread-0] INFO  com.portforward.Main - 收到關閉信號，正在停止服務器...
+2025-07-28 20:50:10.293 [Thread-0] INFO  c.p.server.PortForwardServer - 停止端口轉發服務器...
+2025-07-28 20:50:10.295 [Thread-0] INFO  c.p.server.PortForwardServer - 端口轉發服務器已停止
+2025-07-28 20:50:10.295 [Thread-0] INFO  com.portforward.Main - 服務器已停止
+2025-07-28 20:50:25.387 [main] INFO  com.portforward.Main - 啟動Java NIO端口轉發服務器...
+2025-07-28 20:50:25.389 [main] INFO  com.portforward.config.Config - 端口映射解析完成: 2 個映射
+2025-07-28 20:50:25.390 [main] INFO  com.portforward.config.Config -   監聽端口 8080 -> 遠程端口 8080
+2025-07-28 20:50:25.390 [main] INFO  com.portforward.config.Config -   監聽端口 2011 -> 遠程端口 2011
+2025-07-28 20:50:25.390 [main] INFO  com.portforward.config.Config - 配置加載完成: 監聽端口=[8080, 2011], 遠程端口=[8080, 2011], 遠程服務器=127.0.0.1
+2025-07-28 20:50:25.390 [main] INFO  com.portforward.Main - 配置加載成功
+2025-07-28 20:50:25.393 [main] INFO  c.p.server.PortForwardServer - 啟動端口轉發服務器...
+2025-07-28 20:50:25.398 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 8080
+2025-07-28 20:50:25.398 [main] INFO  c.p.server.PortForwardServer - 綁定端口: 2011
+2025-07-28 20:50:25.398 [main] INFO  c.p.server.PortForwardServer - 端口轉發服務器啟動完成，監聽端口: [8080, 2011]
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main - 端口轉發服務器啟動成功！
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main - 監聽端口: [8080, 2011]
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main - 遠程端口: [8080, 2011]
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main - 遠程服務器: 127.0.0.1 (1:1端口映射)
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main - 安全配置:
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main -   - 最大封包大小: 8192 bytes
+2025-07-28 20:50:25.399 [main] INFO  com.portforward.Main -   - 最小封包大小: 1 bytes
+2025-07-28 20:50:25.400 [main] INFO  com.portforward.Main -   - 每IP最大連接數: 100
+2025-07-28 20:50:25.400 [main] INFO  com.portforward.Main -   - 連接速率限制: 10/60000ms
+2025-07-28 20:50:25.400 [main] INFO  com.portforward.Main -   - TCP ping檢測: true
+2025-07-28 21:05:25.239 [Thread-0] INFO  com.portforward.Main - 收到關閉信號，正在停止服務器...
+2025-07-28 21:05:25.240 [Thread-0] INFO  c.p.server.PortForwardServer - 停止端口轉發服務器...
+2025-07-28 21:05:25.243 [Thread-0] INFO  c.p.server.PortForwardServer - 端口轉發服務器已停止
+2025-07-28 21:05:25.243 [Thread-0] INFO  com.portforward.Main - 服務器已停止
